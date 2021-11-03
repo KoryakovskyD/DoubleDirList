@@ -26,8 +26,10 @@ public class DoubleDirList {
         if (isEmpty())
             return null;
         Object res = head.value;
-        if (head != tail)
+        if (head != tail) {
             head = head.next;
+            head.prev = null;
+        }
         else
             head = tail = null;
         return res;
@@ -56,8 +58,9 @@ public class DoubleDirList {
         Object res = tail.value;
         if (head != tail) {
             ListItem it = tail;
-            it.prev = tail;
+            tail = it.prev;
             tail.next = null;
+            it.prev = tail.prev;
         } else
             head = tail = null;
         return res;
@@ -67,11 +70,8 @@ public class DoubleDirList {
     public boolean contains(Object value) {
         ListItem it = head;
         while (it != null) {
-            if(it.checkValue(value)) {
-                System.out.println("prev=" + it.prev.value);
+            if(it.checkValue(value))
                 return true;
-            }
-            it.prev = it;
             it = it.next;
         }
         return false;
@@ -92,19 +92,24 @@ public class DoubleDirList {
             removeFromHead();
             return;
         }
-        ListItem it = head.next;
+
+        ListItem it = head.next,
+                savPrev = head;
         it.prev = head;
         while (it != null) {
             if (it.checkValue(value)) {
                 if (it.equals(tail))
                     removeFromTail();
                 else {
-                    head.prev.next = it.next;
-                    it.prev = head.prev;
+                    it.prev = savPrev.prev;
+                    it = it.next;
+                    System.out.println("it=" + it.value + "prev=" + it.prev.value);
+                    //it.next = it;
+                    //it.prev = it;
                 }
                 return;
             }
-            head.prev = it;
+            it.prev = it;
             it = it.next;
         }
 
@@ -145,6 +150,4 @@ public class DoubleDirList {
             it = it.prev;
         }
     }
-
-
 }
