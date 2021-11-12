@@ -84,7 +84,7 @@ public class Main {
         lst1.addToTail("Head2");
         lst1.addToTail("Head3");
         lst.absorbingListToHead(lst1);
-        lst1.printAll();
+        lst.printAll();
         System.out.println();
 
 
@@ -95,8 +95,13 @@ public class Main {
         lst2.addToHead("End1");
         lst2.addToTail("End2");
         lst2.addToTail("End3");
-        lst1.absorbingListToTail(lst2);
+        lst.absorbingListToTail(lst2);
+        lst.printAll();
+
+        // проверка на пустоту списков
+        System.out.println("проверка на пустоту списков");
         lst1.printAll();
+        lst2.printAll();
         System.out.println();
     }
 }

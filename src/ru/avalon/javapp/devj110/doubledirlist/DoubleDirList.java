@@ -95,7 +95,7 @@ public class DoubleDirList {
         ListItem it = head.next;
         while (it != null) {
             if (it.checkValue(value)) {
-                if (it.equals(tail))
+                if (it == tail)
                     removeFromTail();
                 else {
                     it.prev.next = it.next;
@@ -132,17 +132,29 @@ public class DoubleDirList {
     //поглощение списка другим списком с добавлением значений второго в начало
     public void absorbingListToHead(DoubleDirList list){
         list.tail.next = head;
+        head = list.head;
+        list.head = list.tail = null;
+        /*
+        list.tail.next = head;
         head.prev = list.tail;
         list.tail = tail;
         head = tail = null;
+         */
     }
 
     //поглощение списка другим списком с добавлением значений второго в конец
     public void absorbingListToTail(DoubleDirList list){
+        tail.next = list.head;
+        tail = list.tail;
+        list.head.prev = tail.next;
+        list.head = list.tail = null;
+        /*
         list.head.prev = tail;
         tail.next = list.head;
         tail = list.tail;
         list.head = list.tail = null;
+
+         */
     }
 
 
@@ -186,6 +198,21 @@ public class DoubleDirList {
             i++;
         }
         return "";
+    }
+
+
+    private class ListItem {
+        Object value;
+        ListItem next;
+        ListItem prev;
+
+        public ListItem(Object value) {
+            this.value = value;
+        }
+
+        boolean checkValue(Object value) {
+            return value == null & this.value == null || value != null && value.equals(this.value);
+        }
     }
 
 }
