@@ -132,29 +132,17 @@ public class DoubleDirList {
     //поглощение списка другим списком с добавлением значений второго в начало
     public void absorbingListToHead(DoubleDirList list){
         list.tail.next = head;
+        head.prev = list.tail;
         head = list.head;
         list.head = list.tail = null;
-        /*
-        list.tail.next = head;
-        head.prev = list.tail;
-        list.tail = tail;
-        head = tail = null;
-         */
     }
 
     //поглощение списка другим списком с добавлением значений второго в конец
     public void absorbingListToTail(DoubleDirList list){
-        tail.next = list.head;
-        tail = list.tail;
-        list.head.prev = tail.next;
-        list.head = list.tail = null;
-        /*
         list.head.prev = tail;
         tail.next = list.head;
         tail = list.tail;
         list.head = list.tail = null;
-
-         */
     }
 
 

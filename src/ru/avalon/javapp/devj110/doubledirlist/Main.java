@@ -78,6 +78,10 @@ public class Main {
         // первого списка; после поглощения второй список должен очищаться;
         DoubleDirList lst1 = new DoubleDirList();
 
+
+
+
+
         // добавление элементов в начало и конец
         System.out.println("поглощение списка другим списком с добавлением значений второго в начало");
         lst1.addToHead("Head1");
@@ -96,6 +100,7 @@ public class Main {
         lst2.addToTail("End2");
         lst2.addToTail("End3");
         lst.absorbingListToTail(lst2);
+
         lst.printAll();
 
         // проверка на пустоту списков
@@ -103,5 +108,36 @@ public class Main {
         lst1.printAll();
         lst2.printAll();
         System.out.println();
+
+
+        System.out.println("-------------------------------");
+        DoubleDirList l1 = new DoubleDirList(),
+                l2 = new DoubleDirList();
+
+        l1.addToHead("111");
+        l1.addToTail("444");
+        l2.addToHead("222");
+
+        l1.absorbingListToTail(l2);
+        l1.printAllRevers();
+        System.out.println("++");
+        l1.printAll();
+
+
+        System.out.println("-------------------------------");
+        DoubleDirList l3 = new DoubleDirList(),
+                l4 = new DoubleDirList();
+
+        l3.addToHead("111");
+        l3.addToTail("444");
+        l4.addToHead("222");
+
+        l3.absorbingListToHead(l4);
+        l3.printAllRevers();
+        System.out.println("++");
+        l3.printAll();
+
+
+
     }
 }
