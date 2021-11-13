@@ -61,6 +61,7 @@ public class Main {
         lst.printAllRevers();
         System.out.println();
 
+        /*
         // выполнение действия, заданного в параметре метода, для каждого значения из списка
         System.out.println("выполнение действия, заданного в параметре метода, для каждого значения из списка");
         Consumer<String> printer = x -> System.out.println(x.toUpperCase());
@@ -72,6 +73,8 @@ public class Main {
         Consumer<String> printer1 = x -> System.out.println(x.toUpperCase());
         printer1.accept(lst.printAllRevers("Строка"));
         System.out.println();
+
+         */
 
 
         // поглощение списка другим списком с добавлением значений второго в начало
@@ -136,8 +139,5 @@ public class Main {
         l3.printAllRevers();
         System.out.println("++");
         l3.printAll();
-
-
-
     }
 }

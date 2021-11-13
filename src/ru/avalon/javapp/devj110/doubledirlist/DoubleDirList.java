@@ -145,14 +145,25 @@ public class DoubleDirList {
         list.head = list.tail = null;
     }
 
+    public void forEach(Consumer consumer) {
+        ListItem it = head;
+        while (it != null) {
+            consumer.accept(it.value);
+            it = it.next;
+        }
+    }
+
 
     // печать всех значений списка
     public void printAll() {
+        /*
         ListItem it = head;
         while (it != null) {
             System.out.println(it.value);
             it = it.next;
         }
+         */
+        forEach(System.out::println);
     }
 
     // печать всех значений списка в обратном порядке
