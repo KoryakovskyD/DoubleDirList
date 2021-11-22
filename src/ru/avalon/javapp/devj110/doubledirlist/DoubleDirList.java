@@ -1,13 +1,16 @@
 package ru.avalon.javapp.devj110.doubledirlist;
 
-public class DoubleDirList {
+import java.util.Iterator;
+import java.util.NoSuchElementException;
 
-    private ListItem head;
-    private ListItem tail;
+public class DoubleDirList<T> implements Iterable<T>{
+
+    private ListItem<T> head;
+    private ListItem<T> tail;
 
     // добавление значения в начало списка
-    public void addToHead(Object value) {
-        ListItem newItem = new ListItem(value);
+    public void addToHead(T value) {
+        ListItem<T> newItem = new ListItem<>(value);
         if (! isEmpty()) {
             head.prev = newItem;
             newItem.next = head;
@@ -17,15 +20,15 @@ public class DoubleDirList {
     }
 
     // извлечение значения из начала списка без его удаления из списка
-    public Object peekFromHead() {
+    public T peekFromHead() {
         return ! isEmpty() ? head.value : null;
     }
 
     // извлечение значения из начала списка с удалением из списка
-    public Object removeFromHead() {
+    public T removeFromHead() {
         if (isEmpty())
             return null;
-        ListItem res = head;
+        ListItem<T> res = head;
         if (head != tail) {
             head = head.next;
             res.next = null;
@@ -37,8 +40,8 @@ public class DoubleDirList {
     }
 
     // добавление значения в конец списка
-    public void addToTail(Object value) {
-        ListItem newItem = new ListItem(value);
+    public void addToTail(T value) {
+        ListItem<T> newItem = new ListItem<>(value);
         if (! isEmpty()) {
             tail.next = newItem;
             newItem.prev = tail;
@@ -49,15 +52,15 @@ public class DoubleDirList {
 
 
     // извлечение значения из конца списка без его удаления
-    public Object peekFromTail() {
+    public T peekFromTail() {
         return tail != null ? tail.value : null;
     }
 
     // извлечение значения из конца списка с удалением
-    public Object removeFromTail() {
+    public T removeFromTail() {
         if (isEmpty())
             return null;
-        ListItem res = tail;
+        ListItem<T> res = tail;
         if (head != tail) {
             tail = tail.prev;
             tail.next = null;
@@ -68,8 +71,8 @@ public class DoubleDirList {
     }
 
     // определение, содержит ли список заданное значение, или нет
-    public boolean contains(Object value) {
-        ListItem it = head;
+    public boolean contains(T value) {
+        ListItem<T> it = head;
         while (it != null) {
             if(it.checkValue(value)) return true;
             it = it.next;
@@ -85,14 +88,14 @@ public class DoubleDirList {
 
 
     // *удаление заданного значения из списка; если значения в списке нет, то ничего происходить не должно
-    public void remove(Object value) {
+    public void remove(T value) {
         if (isEmpty())
             return;
         if (head.checkValue(value)) {
             removeFromHead();
             return;
         }
-        ListItem it = head.next;
+        ListItem<T> it = head.next;
         while (it != null) {
             if (it.checkValue(value)) {
                 if (it == tail)
@@ -111,7 +114,7 @@ public class DoubleDirList {
 
     // добавление всех значений заданного массива в начало списка; порядок значений должен сохраняться
     // — первое значение массива должно стать первым значением списка
-    public void addArrayInHead(Object[] values) {
+    public void addArrayInHead(T[] values) {
         if (values == null)
             throw new IllegalArgumentException("Values is can't be null");
         for (int i = values.length; i> 0; i--) {
@@ -121,7 +124,7 @@ public class DoubleDirList {
 
     // добавление всех значений заданного массива в конец списка; порядок значений должен сохраняться
     // — первое значение массива должно стать первым значением списка
-    public void addArrayInTail(Object[] values) {
+    public void addArrayInTail(T[] values) {
         if (values == null)
             throw new IllegalArgumentException("Values is can't be null");
         for (int i=0; i< values.length; i++) {
@@ -146,7 +149,7 @@ public class DoubleDirList {
     }
 
     public void forEach(Consumer consumer) {
-        ListItem it = head;
+        ListItem<T> it = head;
         while (it != null) {
             consumer.accept(it.value);
             it = it.next;
@@ -156,19 +159,19 @@ public class DoubleDirList {
 
     // печать всех значений списка
     public void printAll() {
-        /*
-        ListItem it = head;
+
+        ListItem<T> it = head;
         while (it != null) {
             System.out.println(it.value);
             it = it.next;
         }
-         */
-        forEach(System.out::println);
+
+        //forEach(System.out::println);
     }
 
     // печать всех значений списка в обратном порядке
     public void printAllRevers() {
-        ListItem it = tail;
+        ListItem<T> it = tail;
         while (it != null) {
             System.out.println(it.value);
             it = it.prev;
@@ -177,7 +180,7 @@ public class DoubleDirList {
 
         // выполнение действия, заданного в параметре метода, для каждого значения из списка
     public String printAll(String str) {
-        ListItem it = head;
+        ListItem<T> it = head;
         int i = 1;
         while (it != null) {
             System.out.println(str + i + ": " + it.value);
@@ -189,7 +192,7 @@ public class DoubleDirList {
 
     // печать всех значений списка в обратном порядке
     public String printAllRevers(String str) {
-        ListItem it = tail;
+        ListItem<T> it = tail;
         int i = 1;
         while (it != null) {
             System.out.println(str + i + ": " + it.value);
@@ -199,18 +202,90 @@ public class DoubleDirList {
         return "";
     }
 
+    private ListItem<T> findItem(T value) {
+        ListItem<T> it = head;
+        while(it != null) {
+            if(it.checkValue(value))
+                return it;
+            it = it.next;
+        }
+        return null;
+    }
 
-    private class ListItem {
-        Object value;
-        ListItem next;
-        ListItem prev;
+    @Override
+    public Iterator<T> iterator() {
+        return new ListIterator<>(head);
+    }
 
-        public ListItem(Object value) {
+    public Iterable<T> after(T val) {
+        return () -> new ListIterator<>(findItem(val));
+    }
+
+    public Iterable<T> before(T val) {
+        return () -> new BeforeListIterator<>(head, val);
+    }
+
+
+
+
+    private static class ListItem<V> {
+        V value;
+        ListItem<V> next;
+        ListItem<V> prev;
+
+        public ListItem(V value) {
             this.value = value;
         }
 
-        boolean checkValue(Object value) {
+        boolean checkValue(V value) {
             return value == null & this.value == null || value != null && value.equals(this.value);
+        }
+    }
+
+
+    private static class ListIterator<V> implements Iterator<V> {
+        private ListItem<V> nextNode;
+
+        public ListIterator(ListItem<V> startNode) {
+            this.nextNode = startNode;
+        }
+
+        @Override
+        public boolean hasNext() {
+            return nextNode != null;
+        }
+
+        @Override
+        public V next() {
+            if(nextNode == null)
+                throw new NoSuchElementException();
+            V res = nextNode.value;
+            nextNode = nextNode.next;
+            return res;
+        }
+    }
+
+    private static class BeforeListIterator<V> implements Iterator<V> {
+        private ListItem<V> nextNode;
+        private V finishVal;
+
+        public BeforeListIterator(ListItem<V> startNode, V finishVal) {
+            this.nextNode = startNode;
+            this.finishVal = finishVal;
+        }
+
+        @Override
+        public boolean hasNext() {
+            return nextNode != null && !nextNode.checkValue(finishVal);
+        }
+
+        @Override
+        public V next() {
+            if(nextNode == null || nextNode.checkValue(finishVal))
+                throw new NoSuchElementException();
+            V res = nextNode.value;
+            nextNode = nextNode.next;
+            return res;
         }
     }
 

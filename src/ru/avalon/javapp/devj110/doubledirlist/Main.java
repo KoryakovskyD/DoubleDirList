@@ -2,7 +2,10 @@ package ru.avalon.javapp.devj110.doubledirlist;
 
 public class Main {
     public static void main(String[] args) {
+
+        /*
         DoubleDirList lst = new DoubleDirList();
+
 
         // добавление элементов в начало и конец
         System.out.println("добавление элементов в начало и конец");
@@ -61,7 +64,7 @@ public class Main {
         lst.printAllRevers();
         System.out.println();
 
-        /*
+
         // выполнение действия, заданного в параметре метода, для каждого значения из списка
         System.out.println("выполнение действия, заданного в параметре метода, для каждого значения из списка");
         Consumer<String> printer = x -> System.out.println(x.toUpperCase());
@@ -74,7 +77,7 @@ public class Main {
         printer1.accept(lst.printAllRevers("Строка"));
         System.out.println();
 
-         */
+
 
 
         // поглощение списка другим списком с добавлением значений второго в начало
@@ -139,5 +142,37 @@ public class Main {
         l3.printAllRevers();
         System.out.println("++");
         l3.printAll();
+        */
+
+        System.out.println("Print all");
+        DoubleDirList<String> lst = new DoubleDirList<>();
+        lst.addToHead("111");
+        lst.addToTail("222");
+        lst.addToTail("333");
+        lst.addToTail("444");
+        for (String s : lst) {
+            System.out.println(s);
+        }
+        System.out.println("----------");
+        System.out.println("Print after 222");
+
+        for (String s : lst.after("222")) {
+            System.out.println(s);
+        }
+        System.out.println("-----------");
+
+
+        for (String s : lst.after("zzz")) {
+            System.out.println();
+        }
+        System.out.println("-----------");
+
+        System.out.println("Print before 333");
+        for (String s : lst.before("333")) {
+            System.out.println(s);
+        }
+        System.out.println("-----------");
+
+
     }
 }
