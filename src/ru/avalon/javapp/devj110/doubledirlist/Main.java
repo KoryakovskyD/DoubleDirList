@@ -150,6 +150,7 @@ public class Main {
         lst.addToTail("222");
         lst.addToTail("333");
         lst.addToTail("444");
+        lst.addToTail("555");
         for (String s : lst) {
             System.out.println(s);
         }
@@ -159,12 +160,7 @@ public class Main {
         for (String s : lst.after("222")) {
             System.out.println(s);
         }
-        System.out.println("-----------");
 
-
-        for (String s : lst.after("zzz")) {
-            System.out.println();
-        }
         System.out.println("-----------");
 
         System.out.println("Print before 333");
@@ -172,7 +168,38 @@ public class Main {
             System.out.println(s);
         }
         System.out.println("-----------");
+        System.out.println("Between 222 and 444");
+        for (String s : lst.between("222", "444")) {
+            System.out.println(s);
+        }
 
+
+        System.out.println("-----------");
+
+        System.out.println("Print reverse");
+        for (String s : lst.reverse()) {
+            System.out.println(s);
+        }
+
+        System.out.println("-----------");
+
+        System.out.println("Print reverse after 333");
+        for (String s : lst.reverseAfter("333")) {
+            System.out.println(s);
+        }
+
+        System.out.println("-----------");
+
+        System.out.println("Print reverse before 333");
+        for (String s : lst.reverseBefore("333")) {
+            System.out.println(s);
+        }
+        System.out.println("-----------");
+
+        System.out.println("Print reverse between 222 and 555");
+        for (String s : lst.reverseBetween("222","555")) {
+            System.out.println(s);
+        }
 
     }
 }

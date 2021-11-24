@@ -218,14 +218,32 @@ public class DoubleDirList<T> implements Iterable<T>{
     }
 
     public Iterable<T> after(T val) {
-        return () -> new ListIterator<>(findItem(val));
+        return () -> new ListIterator<>(findItem(val).next);
     }
 
     public Iterable<T> before(T val) {
         return () -> new BeforeListIterator<>(head, val);
     }
 
+    public Iterable<T> between(T val1, T val2) {
+        return () -> new BeforeListIterator<>(findItem(val1).next, val2);
+    }
 
+    public Iterable<T> reverse() {
+        return () -> new AfterListIterator<>(tail, null);
+    }
+
+    public Iterable<T> reverseAfter(T val) {
+        return () -> new AfterListIterator<>(tail, val);
+    }
+
+    public Iterable<T> reverseBefore(T val) {
+        return () -> new AfterListIterator<>(findItem(val).prev, null);
+    }
+
+    public Iterable<T> reverseBetween(T val1, T val2) {
+        return () -> new AfterListIterator<>(findItem(val2).prev, val1);
+    }
 
 
     private static class ListItem<V> {
@@ -281,7 +299,7 @@ public class DoubleDirList<T> implements Iterable<T>{
 
         @Override
         public V next() {
-            if(nextNode == null || nextNode.checkValue(finishVal))
+            if (nextNode == null || nextNode.checkValue(finishVal))
                 throw new NoSuchElementException();
             V res = nextNode.value;
             nextNode = nextNode.next;
@@ -289,4 +307,27 @@ public class DoubleDirList<T> implements Iterable<T>{
         }
     }
 
+        private static class AfterListIterator<V> implements Iterator<V> {
+            private ListItem<V> nextNode;
+            private V finishVal;
+
+            public AfterListIterator(ListItem<V> startNode, V finishVal) {
+                this.nextNode = startNode;
+                this.finishVal = finishVal;
+            }
+
+            @Override
+            public boolean hasNext() {
+                return nextNode != null && !nextNode.checkValue(finishVal);
+            }
+
+            @Override
+            public V next() {
+                if (nextNode == null || nextNode.checkValue(finishVal))
+                    throw new NoSuchElementException();
+                V res = nextNode.value;
+                nextNode = nextNode.prev;
+                return res;
+            }
+        }
 }
