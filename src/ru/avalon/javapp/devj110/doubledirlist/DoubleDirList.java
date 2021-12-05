@@ -148,7 +148,7 @@ public class DoubleDirList<T> implements Iterable<T>{
         list.head = list.tail = null;
     }
 
-    public void forEach(Consumer consumer) {
+    public void forEach(Consumer<? super T> consumer) {
         ListItem<T> it = head;
         while (it != null) {
             consumer.accept(it.value);
@@ -159,14 +159,11 @@ public class DoubleDirList<T> implements Iterable<T>{
 
     // печать всех значений списка
     public void printAll() {
-
         ListItem<T> it = head;
         while (it != null) {
             System.out.println(it.value);
             it = it.next;
         }
-
-        //forEach(System.out::println);
     }
 
     // печать всех значений списка в обратном порядке
@@ -178,7 +175,7 @@ public class DoubleDirList<T> implements Iterable<T>{
         }
     }
 
-        // выполнение действия, заданного в параметре метода, для каждого значения из списка
+    // выполнение действия, заданного в параметре метода, для каждого значения из списка
     public String printAll(String str) {
         ListItem<T> it = head;
         int i = 1;
